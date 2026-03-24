@@ -29,11 +29,6 @@ const corsOptions = {
 app.use(cors(corsOptions)); // Use the configured CORS
 app.use(express.json()); // Parse JSON requests
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
-
 // Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
@@ -46,8 +41,23 @@ app.use("/api/v1/hackathoncandidate", hackathonCandidateRouter);
 app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1', paswordRoute);
 
-// Start Server
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+// Database Connection & Start Server
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
+    });
+    console.log('✅ Connected to MongoDB');
+
+    const PORT = process.env.PORT || 3001;
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1);
+  }
+};
+
+startServer();
