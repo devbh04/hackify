@@ -24,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script defer src="https://cloud.umami.is/script.js" data-website-id="5179aa5d-92b8-452a-82ef-291c9c806a27"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
       </head>
       <body
         className={`${geistSans.className} min-h-screen bg-surface text-on-surface`}
